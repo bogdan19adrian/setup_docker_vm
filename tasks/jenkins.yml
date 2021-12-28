@@ -1,0 +1,23 @@
+---
+- name: Create jenkins folder on host.
+  ansible.builtin.file:
+    path: "{{ config_dir }}/jenkins"
+    state: directory
+    mode: 0755
+  become: false
+
+- name: Copy jenkins docker compose on host.
+  ansible.builtin.template:
+    src: templates/jenkins-docker-compose.yml.j2
+    dest: "{{ config_dir }}/jenkins/docker-compose.yml"
+    mode: '0640'
+  become: false
+  notify: Restart jenkins
+
+# TODO: The first time this playbook is run, the `pi` user may not be added
+# to the `docker` group, so this task may fail.
+- name: Ensure jenkins is running.
+  community.docker.docker_compose:
+    project_src: "{{ config_dir }}/jenkins/"
+    build: false
+  become: false

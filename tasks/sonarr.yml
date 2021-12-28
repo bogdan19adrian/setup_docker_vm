@@ -1,0 +1,44 @@
+---
+- name: Create sonarr folder on host.
+  ansible.builtin.file:
+    path: "{{ config_dir }}/sonarr"
+    state: directory
+    mode: 0755
+  become: false
+
+- name: Create data folder on host.
+  ansible.builtin.file:
+    path: "{{ config_dir }}/sonarr/data"
+    state: directory
+    mode: 0755
+  become: false
+
+- name: Create media folder on host.
+  ansible.builtin.file:
+    path: "{{ config_dir }}/sonarr/media"
+    state: directory
+    mode: 0755
+  become: false
+
+- name: Create config folder on host.
+  ansible.builtin.file:
+    path: "{{ config_dir }}/sonarr/config"
+    state: directory
+    mode: 0755
+  become: false  
+
+- name: Copy sonarr dcoker compose on host.
+  ansible.builtin.template:
+    src: templates/sonarr-docker-compose.yml.j2
+    dest: "{{ config_dir }}/sonarr/docker-compose.yml"
+    mode: '0640'
+  become: false
+  notify: Restart sonarr
+
+# TODO: The first time this playbook is run, the `pi` user may not be added
+# to the `docker` group, so this task may fail.
+- name: Ensure sonarr is running.
+  community.docker.docker_compose:
+    project_src: "{{ config_dir }}/sonarr/"
+    build: false
+  become: false

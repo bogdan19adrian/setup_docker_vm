@@ -1,0 +1,27 @@
+---
+# Location where configuration files will be stored.
+config_dir: '~'
+
+# Pi-hole configuration.
+pihole_enable: false
+pihole_hostname: pihole
+pihole_timezone: Europe/Bucharest
+pihole_password: "change-this-password"
+
+bitbucket_enable: false
+jenkins_enable: false
+portainer_enable: false
+
+# Sonarr configuration.
+sonarr_enable: true
+sonarr:
+  config: "/home/sonarr/config"
+  media: "/home/sonarr/media"
+  data: "/home/sonarr/data"
+
+# Radarr configuration.
+radarr_enable: true
+radarr:
+  config: "/home/radarr/config"
+  media: "/home/radarr/media"
+  data: "/home/radarr/data"

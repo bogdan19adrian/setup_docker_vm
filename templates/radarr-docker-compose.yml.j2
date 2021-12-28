@@ -1,0 +1,14 @@
+  radarr:
+    image: ghcr.io/linuxserver/radarr
+    container_name: radarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+    volumes:
+      - {{ radarr.config }}:/config
+      - {{ radarr.media }}:/movies
+      - {{ radarr.data }}:/data
+    ports:
+      - 7878:7878
+    restart: unless-stopped

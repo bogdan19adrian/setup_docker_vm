@@ -1,0 +1,42 @@
+---
+- name: Restart portainer
+  community.docker.docker_compose:
+    project_src: "{{ config_dir }}/portainer/"
+    build: false
+    restarted: true
+  become: false
+
+- name: Restart jenkins
+  community.docker.docker_compose:
+    project_src: "{{ config_dir }}/jenkins/"
+    build: false
+    restarted: true
+  become: false
+
+- name: Restart bitbucket
+  community.docker.docker_compose:
+    project_src: "{{ config_dir }}/bitbucket/"
+    build: false
+    restarted: true
+  become: false
+
+- name: Restart pi-hole
+  community.docker.docker_compose:
+    project_src: "{{ config_dir }}/pi-hole/"
+    build: false
+    restarted: true
+  become: false
+
+- name: Restart sonarr
+  community.docker.docker_compose:
+    project_src: "{{ config_dir }}/sonarr/"
+    build: false
+    restarted: true
+  become: false
+
+- name: Restart radarr
+  community.docker.docker_compose:
+    project_src: "{{ config_dir }}/radarr/"
+    build: false
+    restarted: true
+  become: false

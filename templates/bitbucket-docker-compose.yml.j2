@@ -1,0 +1,44 @@
+version: '3.7'
+
+services:
+  
+#  ### BEGIN BITBUCKET ###
+  bitbucket:
+    container_name: dle-bitbucket
+    image: atlassian/bitbucket-server
+    restart: unless-stopped
+    volumes:
+      - bitbucket-data:/var/atlassian/application-data/bitbucket
+    ports:
+      - '7990:7990'
+      - '7999:7999'
+    environment:
+      - SERVER_SECURE=true
+      - SERVER_SCHEME=https
+      - BITBUCKET_HOME=/var/atlassian/application-data/bitbucket/
+      - JDBC_DRIVER=org.postgresql.Driver
+      - JDBC_USER=user
+      - JDBC_PASSWORD=pass
+      - JDBC_URL=jdbc:postgresql://bitbucket-db:5432/bitbucket
+    depends_on:
+      - bitbucket-db
+
+  bitbucket-db:
+    image: postgres:9.6
+    container_name: dle-bitbucket-db
+    restart: unless-stopped
+    ports:
+      - '5432:5432'
+    command: -p 5432
+    volumes:
+      - bitbucket-data-db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_USER=user
+      - POSTGRES_DB=bitbucket
+      - PGDATA=/var/lib/postgresql/data/pgdata
+
+
+volumes:
+  bitbucket-data:
+  bitbucket-data-db:

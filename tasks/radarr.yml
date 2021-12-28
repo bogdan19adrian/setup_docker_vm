@@ -1,0 +1,44 @@
+---
+- name: Create radarr folder on host.
+  ansible.builtin.file:
+    path: "{{ config_dir }}/radarr"
+    state: directory
+    mode: 0755
+  become: false
+
+- name: Create data folder on host.
+  ansible.builtin.file:
+    path: "{{ config_dir }}/radarr/data"
+    state: directory
+    mode: 0755
+  become: false
+
+- name: Create media folder on host.
+  ansible.builtin.file:
+    path: "{{ config_dir }}/radarr/media"
+    state: directory
+    mode: 0755
+  become: false
+
+- name: Create config folder on host.
+  ansible.builtin.file:
+    path: "{{ config_dir }}/radarr/config"
+    state: directory
+    mode: 0755
+  become: false  
+
+- name: Copy radarr dcoker compose on host.
+  ansible.builtin.template:
+    src: templates/radarr-docker-compose.yml.j2
+    dest: "{{ config_dir }}/radarr/docker-compose.yml"
+    mode: '0640'
+  become: false
+  notify: Restart radarr
+
+# TODO: The first time this playbook is run, the `pi` user may not be added
+# to the `docker` group, so this task may fail.
+- name: Ensure radarr is running.
+  community.docker.docker_compose:
+    project_src: "{{ config_dir }}/radarr/"
+    build: false
+  become: false
